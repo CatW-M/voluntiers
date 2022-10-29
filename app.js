@@ -27,6 +27,7 @@ db.once('open', () => {
 
 db.on('error', (error) => {
     console.log(`Database Error: ${error}`);
+});
 
 
 // API Routes
@@ -38,10 +39,8 @@ app.get('/', (req, res) => {
   app.use('/hours', require('./controllers/hours'));
 app.use('/examples', require('./controllers/example'));
 app.use('/users', require('./controllers/user'));
-
+});
 // Server
 const server = app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));
 
 module.exports = server;
-
-  
