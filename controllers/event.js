@@ -10,6 +10,7 @@ const { JWT_SECRET } = process.env;
 // DB Models
 const Event = require("../models/event");
 
+
 router.get("/", (req, res) => {
   Event.find({})
     .then((events) => {
@@ -50,6 +51,7 @@ router.post("/", (req, res) => {
     .then((events) => {
       console.log("New event =>>", events);
       res.json({ events: events });
+
     })
     .catch((error) => {
       console.log("error", error);
@@ -64,15 +66,6 @@ router.put("/:id", async(req, res) => {
     } catch (error) {
     console.log(error);
     }
-//   Event.findById(req.params.id)
-//     .then((error, foundEvent) => {
-//       console.log("Event found", foundEvent);
-//       res.json({ foundEvent: foundEvent });
-//     })
-//     .catch((error) => {
-//       console.log("error", error);
-//       res.json({ message: "Error ocurred, please try again" });
-//     });
 });
 
 router.delete("/:id", (req, res) => {
