@@ -38,15 +38,15 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/create", (req, res) => {
   Event.create({
-    name: req.body.name,
-    date: req.body.date,
-    location: req.body.location,
+    eventName: req.body.name,
+    eventDate: req.body.date,
+    eventLocation: req.body.location,
     startTime: req.body.time,
     endTime: req.body.endTime,
     users: req.body.users,
-    organizationId: req.body.organizationId,
+    organizationId: req.params.organizationId,
   })
     .then((events) => {
       console.log("New event =>>", events);

@@ -1,69 +1,43 @@
-# voluntiers
-# API Setup
+# Voluntiers REST API
 
-This is a initializing starting point for making an API.
+## Introduction
 
-### Example Model
+Welcome to the VolunTiers API! This documentation should help you familiarize yourself with the resources available and how to consume them with  [Django Rest
+Framework](https://github.com/tomchristie/django-rest-framework) and so the
+JSON responses are often similar to the way in which DRF makes responses.
 
-| Column Name | Data Type | Notes |
-| --------------- | ------------- | ------------------------------ |
-| _id | ObjectId | Made by MongoDB |
-| name | String | Optional in this case |
-| completed | Boolean | `true` or `false` |
-| __v | Number | Made by Mongoose |
+Where full URLs are provided in responses they will be rendered as if service
+is running on 'http://testserver/'.
 
-### Examples - Default Routes
+## Open Endpoints
 
-| Method | Path | Location | Purpose |
-| ------ | ---------------- | -------------- | ------------------- |
-| GET | / | app.js | Welcome to API |
-| GET | /examples | example.js | Get all examples |
-| GET | /examples/:id | example.js | Get one example |
-| POST | /examples | example.js | Create an example |
-| PUT | /examples/:id | example.js | Update an example |
-| DELETE | /examples/:id | example.js | Delete an example |
+Open endpoints require no Authentication.
 
-## Examples - Detailed Info
+* [Login](login.md) : `POST /api/login/`
 
-Detailed info for serialized examples
-- Get all examples : GET /examples
-- Get one example : GET /examples/:id
-- Create a capsule : POST /examples
-- Update a capsule : PUT /examples/:id
-- Delete a capsule : DELETE /examples/:id
+## Endpoints that require Authentication
 
+Closed endpoints require a valid Token to be included in the header of the
+request. A Token can be acquired from the Login view above.
 
-## Users
+### Current User related
 
-| Column Name | Data Type | Notes |
-| --------------- | ------------- | ------------------------------ |
-| id | ObjectId | Made by MongoDB |
-| name | String | required |
-| email | String | required |
-| password | String | required (hash) |
-| date | Date | Set default date  |
-| __v | Number | Made by Mongoose |
+Each endpoint manipulates or displays information related to the User whose
+Token is provided with the request:
 
-## Users - Default Routes
+* [Show info](user/get.md) : `GET /api/user/`
+* [Update info](user/put.md) : `PUT /api/user/`
 
-| Method | Path | Location | Purpose |
-| ------ | ---------------- | -------------- | ------------------- |
-| GET | /users/test | user.js | Test route for users, no user returned |
-| POST | /users/register | user.js | Create a new user and add to DB |
-| POST | /users/login | user.js | Logs user in via credentials, returns user |
-| GET | /users/profile | user.js | Protected route, need token to access |
+### Account related
 
-# Users - Detailed Info
+Endpoints for viewing and manipulating the Accounts that the Authenticated User
+has permissions to access.
 
-Detailed info for serialized examples
-- Test user routes : GET /users/test
-- Create a user : POST /users/signup
-- Login a user : POST /users/login
-- Return user data (must login beforehand and use token) : GET /users/profile
-
-
-# How to Use the Spotify API
-
+* [Show Accessible Accounts](accounts/get.md) : `GET /api/accounts/`
+* [Create Account](accounts/post.md) : `POST /api/accounts/`
+* [Show An Account](accounts/pk/get.md) : `GET /api/accounts/:pk/`
+* [Update An Account](accounts/pk/put.md) : `PUT /api/accounts/:pk/`
+* [Delete An Account](accounts/pk/delete.md) : `DELETE /api/accounts/:pk/`
 - [ ] Install `axios`
 ```text
 npm install axios

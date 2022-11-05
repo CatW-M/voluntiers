@@ -10,9 +10,9 @@ const { JWT_SECRET } = process.env;
 // DB Models
 const Organization = require('../models/organization');
 
-router.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the Organizations page' });
-});
+// router.get('/', (req, res) => {
+//     res.json({ message: 'Welcome to the Organizations page' });
+// });
 
 router.get('/', (req, res) => {
     Organization.find({})
@@ -42,10 +42,10 @@ router.get('/:id', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res) => {
+router.post('/create', (req, res) => {
     Organization.findOne({ orgName: req.body.orgName })
         .then(org => {
-            // if email already exists, a user will come back
+
             if (org) {
                 // send a 400 response
                 return res.status(400).json({ message: 'Organization already exists' });
@@ -57,7 +57,6 @@ router.post('/', (req, res) => {
                     contactPerson: req.body.contactPerson,
                     contactEmail: req.body.contactEmail,
                     contactPhone: req.body.contactPhone,
-                    createdAt: req.body.createdAt
                 })
                     .then(organizations => {
                         console.log('New organization =>>', organizations);
@@ -70,6 +69,27 @@ router.post('/', (req, res) => {
             }
         })
     });
+
+    router.post("/:id/event", (req, res) => {
+        Event.create({
+          eventName: req.body.name,
+          eventDate: req.body.date,
+          eventLocation: req.body.location,
+          startTime: req.body.time,
+          endTime: req.body.endTime,
+          users: req.body.users,
+          organizationId: req.params.organizationId,
+        })
+          .then((events) => {
+            console.log("New event =>>", events);
+            res.json({ events: events });
+      
+          })
+          .catch((error) => {
+            console.log("error", error);
+            res.json({ message: "Error ocurred, please try again" });
+          });
+      });
 
     router.put('/:id', (req, res) => {
 
