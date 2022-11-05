@@ -100,13 +100,15 @@ router.post('/login', async (req, res) => {
 });
 
 // private
-router.get('/profile', passport.authenticate('jwt', { session: true }), (req, res) => {
+router.get('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
     console.log('====> inside /profile');
     console.log(req.body);
     console.log('====> user')
     console.log(req.user);
-    const { id, name, email } = req.user; // object with user object inside
-    res.json({ id, name, email });
+    const { id }  = req.user; // object with user object inside
+    const {name, email, phone, role, hours} = await User.findById(id);
+    res.json({ name, email, phone, role, hours });
+
 });
 
 router.get('/messages', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -125,10 +127,10 @@ router.get('/leaders', async (req, res) => {
     res.json(leaderboard);
 });
 
-router.get('/userprofile', async (req, res) => {
-    const userProfiles = await User.find(req.params.id);
-    res.json(userProfiles);
-});
+// router.get('/:id', async (req, res) => {
+//     const userProfiles = await User.find();
+//     res.json(userProfiles);
+// });
 
 // Exports
 module.exports = router;
