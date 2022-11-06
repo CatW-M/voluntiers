@@ -15,7 +15,7 @@ router.get('/test', (req, res) => {
     res.json({ message: 'User endpoint OK! ✅' });
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', passport.authenticate('jwt', { session: false }),(req, res)=> {
     // POST - adding the new user to the database
     console.log('===> Inside of /signup');
     console.log('===> /register -> req.body',req.body);
@@ -60,7 +60,7 @@ router.post('/signup', (req, res) => {
     })
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login',  passport.authenticate('jwt', { session: false }), async (req, res) => {
     // POST - finding a user and returning the user
     console.log('===> Inside of /login');
     console.log('===> /login -> req.body', req.body);
@@ -90,7 +90,6 @@ router.post('/login', async (req, res) => {
                 console.log('===> legit', legit);
                 res.json({ success: true, token: `Bearer ${token}`, userData: legit });
             });
-
         } else {
             return res.status(400).json({ message: 'Email or Password is incorrect' });
         }
@@ -100,13 +99,15 @@ router.post('/login', async (req, res) => {
 });
 
 // private
-router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
     console.log('====> inside /profile');
     console.log(req.body);
     console.log('====> user')
     console.log(req.user);
-    const { id, name, email } = req.user; // object with user object inside
-    res.json({ id, name, email });
+    const { id }  = req.user; // object with user object inside
+    const {name, email, phone, role, hours} = await User.findById(id);
+    res.json({ name, email, phone, role, hours });
+
 });
 
 router.get('/messages', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -120,5 +121,11 @@ router.get('/messages', passport.authenticate('jwt', { session: false }), async 
     res.json({ id, name, email, message: messageArray, sameUser });
 });
 
-// Exports
+router.get('/leaders', async (req, res) => {
+    const leaderboard = await User.find().sort([['hours', 'descending']]).limit(10);
+    res.json(leaderboard);
+
+});
+
+
 module.exports = router;
