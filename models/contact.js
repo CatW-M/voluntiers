@@ -18,6 +18,6 @@ const contactSchema = new Schema({
 {timestamps:true}
 );
 
-const Example = mongoose.model('Example', exampleSchema);
+const Contact = mongoose.model('Contact', contactSchema);
 
-module.exports = Example;
+module.exports = Contact;
