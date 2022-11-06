@@ -23,6 +23,22 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/past", (req, res) => {
+  Opportunity.find({
+    date: {
+      $lt: new Date()
+    }
+  })
+    .then((opportunities) => {
+      console.log("Here are the past events", opportunities);
+      res.json({ opportunities: opportunities });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
+    });
+});
+
 router.get("/:id", (req, res) => {
   console.log("find opportunities by", req.params.id);
   Opportunity.findOne({
@@ -57,21 +73,6 @@ router.get("/:id", (req, res) => {
 // });
 
 
-router.get("/past", (req, res) => {
-  Opportunity.find({
-    date: {
-      $lt: new Date()
-    }
-  }).pretty()
-    .then((opportunities) => {
-      console.log("Here are the past events", opportunities);
-      res.json({ opportunities: opportunities });
-    })
-    .catch((error) => {
-      console.log("error", error);
-      res.json({ message: "Error ocurred, please try again" });
-    });
-});
 
 
 router.post("/", (req, res) => {
