@@ -127,7 +127,7 @@ router.put("/:id", (req, res) => {
     .catch((error) => {
       console.log("error", error);
       res.json({ message: "Error ocurred, please try again" });
-   
+    });
 });
 
 router.put("/register/:id", async (req, res) => {
