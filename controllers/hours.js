@@ -10,6 +10,7 @@ const { JWT_SECRET } = process.env;
 // DB Models
 const Hour = require('../models/hours');
 const Opportunity = require('../models/opportunity');
+const User = require("../models/user");
 
 router.get('/', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.find({})
@@ -63,22 +64,26 @@ router.post('/:eventId', passport.authenticate('jwt', { session: false }),(req, 
     });
 });
 
-router.put("/:id",passport.authenticate('jwt', { session: false }), async(req, res) => {
-        Hour.findById(req.params.id).then((error,hours)=>{
-            Hour.findByIdAndUpdate(hours.id,{
-                ...hours,
-                signIn: req.body.signIn,
-                signOut: req.body.signOut,
-            },(error,hours)=>{
-                res.json({hours});
-            })
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-    
-}
-);
+router.post("/submitTime/:id", async (req, res) => {
+    try {
+      console.log(`Trying to get user: ${req.body.email}`);
+      const found_user = await User.findOne(req.body.email);
+      if (!found_user) { throw new Error(`No user found`); }
+      console.log(found_user);
+      console.log(`Found User with ID ${found_user._id}`);
+      const data = await Hour.create({
+        signIn: req.body.signIn,
+        signOut: req.body.signOut,
+        eventId: req.params.id,
+        userId: found_user._id
+ });
+      console.log(data);
+      res.json({ data });
+  
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
 
 router.delete('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
