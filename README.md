@@ -1,6 +1,9 @@
 # Introduction
 This documentation is for users who wish to use the [Voluntiers App](https://github.com/AidenValley/VolunTiers). The Voluntiers API is a series of tools that allow users to use Voluntiers App's many features and is a REST API created with Node, Express.js, and MongoDB.
 
+# Deployed on Heroku
+[Deployed API](https://voluntiers-server.herokuapp.com/)
+
 # API Setup
 To use, fork and clone the repository [here](https://github.com/CatW-M/voluntiers-api)
 In your terminal, type `npm install` to install the dependencies
