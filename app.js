@@ -37,11 +37,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/contactus', require('./controllers/contact'));
-app.use('/eventsignup', require('./controllers/event-signup'));
 app.use('/opportunities', require('./controllers/opportunity'));
 app.use('/organizations', require('./controllers/organization'));
 app.use('/hours', require('./controllers/hours'));
-app.use('/examples', require('./controllers/example'));
 app.use('/users', require('./controllers/user'));
 
 
